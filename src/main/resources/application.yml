@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: dockerfile
+  datasource:
+    url: jdbc:mysql://172.20.0.6:3306/hyqj?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&nullCatalogMeansCurrent=true
+    username: root
+    password: test12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,slf4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+mybatis-plus:
+  type-aliases-package: com.example.dockerfile.db
+  type-aliases-super-type: java.lang.Object
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+    use-generated-keys: true
+    default-statement-timeout: 60
+    default-fetch-size: 100
+  mapper-locations: classpath*:mybatis-mappings/*.xml
+logging:
+  level:
+    com.znsd.springboot: debug
+
+  redis:
+    host: 1.14.109.55
+    port: 7379
+    password:
+    database: 0
+    jedis:
+      pool:
+        max-idle: 6
+        max-active: 32
+        max-wait: 100
+        min-idle: 4
+
+

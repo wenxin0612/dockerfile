@@ -1,30 +1,58 @@
 spring:
-  application:
-    name: dockerfile
   datasource:
-    url: jdbc:mysql://172.20.0.6:3306/hyqj?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&nullCatalogMeansCurrent=true
-    username: root
-    password: test12345
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #类型
     type: com.alibaba.druid.pool.DruidDataSource
-    initialSize: 1
-    minIdle: 3
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 30000
-    validationQuery: select 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    filters: stat,wall,slf4j
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    #驱动
+    driverClassName: com.mysql.cj.jdbc.Driver
+    #数据库连接
+    url: jdbc:mysql://1.14.109.55:3306/hmm?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    #数据库用户名密码
+    username: root
+    password: 123456
+    #连接池配置
+    druid:
+      #初始化连接池大小
+      initialSize: 10
+      #最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止
+      minIdle: 16
+      #最大活跃数
+      maxActive: 50
+      #最大建立连接等待时间。如果超过此时间将接到异常。设为－1表示无限制
+      maxWait: 60000
+      #失效检查线程运行时间间隔，要小于MySQL默认
+      timeBetweenEvictionRunsMillis: 60000
+      #连接的超时时间，默认为半小时
+      minEvictableIdleTimeMillis: 300000
+      #检查连接有效性的SQL语句
+      validationQuery: SELECT 1 FROM dual
+      #检查连接是否有效
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      #开启池的prepared statement 池功能
+      poolPreparedStatements: false
+      #statement池能够同时分配的打开的statements的最大数量
+      maxOpenPreparedStatements: 50
+      max-pool-prepared-statement-per-connection-size: 50
+  redis:
+    host: 1.14.109.55
+    port: 6379
+    password: test123456
+    database: 0
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        max-idle: 6
+        max-active: 32
+        max-wait: 100
+        min-idle: 4
+
 mybatis-plus:
   type-aliases-package: com.example.dockerfile.db
   type-aliases-super-type: java.lang.Object
   configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
     map-underscore-to-camel-case: true
     cache-enabled: true
     lazy-loading-enabled: true
@@ -37,16 +65,21 @@ logging:
   level:
     com.znsd.springboot: debug
 
-  redis:
-    host: 1.14.109.55
-    port: 7379
-    password:
-    database: 0
-    jedis:
-      pool:
-        max-idle: 6
-        max-active: 32
-        max-wait: 100
-        min-idle: 4
 
 
+# Sa-Token配置
+sa-token:
+  # token 名称 (同时也是cookie名称)
+  token-name: satoken
+  # token 有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token 临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false

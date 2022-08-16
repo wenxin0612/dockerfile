@@ -1,6 +1,8 @@
 package com.example.dockerfile.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,6 +14,7 @@ import redis.clients.jedis.JedisPoolConfig;
 /**
  * @author xin
  */
+@EnableCaching
 @Configuration
 public class RedisAutoConfig {
 
@@ -23,24 +26,25 @@ public class RedisAutoConfig {
         return connectionFactory;
     }
 
+    @ConfigurationProperties(prefix = "spring.redis")
     @Configuration
     public static class JedisConf {
-        @Value("${spring.redis.host:1.14.109.55}")
+        @Value("${spring.redis.host}")
         private String host;
-        @Value("${spring.redis.port:7379}")
+        @Value("${spring.redis.port}")
         private Integer port;
-        @Value("${spring.redis.password:}")
+        @Value("${spring.redis.password}")
         private String password;
-        @Value("${spring.redis.database:0}")
+        @Value("${spring.redis.database}")
         private Integer database;
 
-        @Value("${spring.redis.jedis.pool.max-active:8}")
+        @Value("${spring.redis.lettuce.pool.max-active}")
         private Integer maxActive;
-        @Value("${spring.redis.jedis.pool.max-idle:8}")
+        @Value("${spring.redis.lettuce.pool.max-idle}")
         private Integer maxIdle;
-        @Value("${spring.redis.jedis.pool.max-wait:-1}")
+        @Value("${spring.redis.lettuce.pool.max-wait}")
         private Long maxWait;
-        @Value("${spring.redis.jedis.pool.min-idle:0}")
+        @Value("${spring.redis.lettuce.pool.min-idle}")
         private Integer minIdle;
 
         @Bean

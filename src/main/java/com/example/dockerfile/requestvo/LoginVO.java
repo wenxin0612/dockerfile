@@ -1,4 +1,4 @@
-package com.example.dockerfile.contronller.requestvo;
+package com.example.dockerfile.requestvo;
 
 
 import lombok.AllArgsConstructor;
@@ -15,8 +15,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginVO {
 
-    String username;
+    String userAccount;
 
-    String password;
+    String passwd;
+
+    String username;
 
 }
